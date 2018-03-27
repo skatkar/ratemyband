@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Rate My Band</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <!-- Custom styles for this template -->
+
+  <link rel="stylesheet" href="stylesheets/signin.css">
+  <link rel="stylesheet" href="stylesheets/twitter.css">
+  <link rel="stylesheet" href="stylesheets/modal.css" />
+
+
+</head>
+
+<body class="container">
+  <header>
+    <h3>Rate My Band</h3>
+  </header>
+
+  <section>
+    <div class="panel panel-footer">
+      <label id="bandName"></label>
+      <p id="bandPerformanceDay"></p>
+      <div data-band="video">
+        <iframe id="bandVideo" width="854" height="480" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="panel panel-title">
+      <div class="panel-body">
+        <form data-band-review="form">
+          <div class="form-group">
+
+            <!--upvote and downvote radio buttons-->
+            <div class="vote-selector form-group">
+              <input id="downvote" type="radio" name="vote" value="downvote" />
+              <label class="drinkcard-cc downvote" for="downvote"></label>
+              <input id="upvote" type="radio" name="vote" value="upvote" />
+              <label class="drinkcard-cc upvote" for="upvote"></label>
+            </div>
+
+            <label for="userComment"> </label>
+            <input class="form-control" name="comment" placeholder="Add a comment" id="userComment" autofocus/>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" type="username" name="username" id="userName" value="" required>
+          </div>
+
+          <button type="submit" class="btn btn-default">Submit</button>
+          <button type="reset" class="btn btn-default">Reset</button>
+        </form>
+      </div>
+    </div>
+    <div class="panel panel-footer">
+      <div class="header panel-heading">
+        <span class="fa fa-comments fa-fw"></span>
+        <b>Comments:</b>
+        <div data-band-review="user-comments"></div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js" charset="utf-8"></script>
+  <!--for modal-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+  <!--my scripts-->
+  <script src="scripts/comments.js" charset="utf-8"></script>
+  <script src="scripts/formhandler.js" charset="utf-8"></script>
+  <script src="scripts/remotedatastore.js" charset="utf-8"></script>
+  <script src="scripts/band.js" charset="utf-8"></script>
+  <script src="scripts/main.js" charset="utf-8"></script>
+</body>
+
+</html>
