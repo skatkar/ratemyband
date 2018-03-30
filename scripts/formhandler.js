@@ -29,14 +29,14 @@
     });
   };
 
-  FormHandler.prototype.addInputHandler = function(fn) {
-    this.$formElement.on("input", "[name=\"emailAddress\"]", function(event) {
-      var emailAddress = event.target.value;
+  FormHandler.prototype.addInputHandler = function() {
+    this.$formElement.on("input", "[name=\"vote\"]", function(event) {
+      var isChecked = $("input[name=vote]:checked").val();
       var message = "";
-      if (fn(emailAddress)) {
+      if (isChecked) {
         event.target.setCustomValidity("");
       } else {
-        message = emailAddress + " is not an authorized email address!";
+        message = "Please select the rating thumbs";
         event.target.setCustomValidity(message);
       }
     });

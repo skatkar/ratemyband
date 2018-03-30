@@ -16,14 +16,14 @@
   }
 
   Comments.prototype.addRow = function(bandComment) {
-    console.log("Calling CheckList.addRow()");
+    console.log("Calling Comments.addRow()");
     //this.removeRow(coffeeOrder.emailAddress);
     var rowElement = new Row(bandComment);
     this.$element.append(rowElement.$element);
   };
 
   Comments.prototype.removeRow = function(email) {
-    console.log("Calling CheckList.removeRow()");
+    console.log("Calling Comments.removeRow()");
     this.$element
       .find("[value=\"" + email + "\"]")
       .closest("[data-coffee-order=\"checkbox\"]")
@@ -44,9 +44,15 @@
       thumbIcon = "&#xe126;";
     }
 
-    var description = "<p><b>" + bandComment.username + ":<br/><b>";
+    var description = "<div class=\"comment-img\"> <img src=\"images/user.jpg\"  width=\"50\" height=\"50\" /> </div>"
+    description += "<div class=\"comment-body\"> <div class=\"text\"> <span class=\"glyphicon\">" + thumbIcon +"</span>"+"<font color=\"gray\"> <i> \"" + bandComment.comment + "\"</i></font> </div>";
+    description += "<p class=\"attribution\"><b>by " + bandComment.username + "<b> at ";
+    description += "<font class=\"attribution\">" + bandComment.postDate + "</font><br/>";
+    description += "<hr>";
+
+    /*var description = "<p><b>" + bandComment.username + ":<br/><b>";
     description += "<small><font color=\"gray\">-" + bandComment.postDate + "</font></small><br/>";
-    description += "<span class=\"glyphicon\">" + thumbIcon +"</span>"+"<font color=\"gray\"> <i> \"" + bandComment.comment + "\"</i></font><br/><br/>";
+    description += "<span class=\"glyphicon\">" + thumbIcon +"</span>"+"<font color=\"gray\"> <i> \"" + bandComment.comment + "\"</i></font><br/><br/>";*/
 
     $label.append(description);
     $div.append($label);

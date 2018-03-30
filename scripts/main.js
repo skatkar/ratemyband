@@ -33,10 +33,7 @@
 
   $(document).ready(function() {
     $("#bandName").text(bandName);
-
-    /*bandDetails.getBandVideo.call(bandDetails,bandName,function(videoLink){
-      $("#bandVideo").attr("src", videoLink);
-    });*/
+    //$("input[name=\"vote\"]").required = true;
     bandDetails.getBandInfo.call(bandDetails, bandName, function(bandInfo) {
       $("#bandPerformanceDay").text("Performance on " + bandInfo.performanceDay);
       $("#bandVideo").attr("src", bandInfo.bandVideo);
@@ -45,10 +42,22 @@
 
   $(FORM_SELECTOR_COMMENTS).ready(function() {
     //console.log("Page refreshed");
+
     myBandComments.displayComments.call(myBandComments, bandName, function(comments) {
+      var numUpVotes = 0;
+      var numDownVotes = 0;
       $.each(comments, function(i, comment) {
+        if(comment.vote == "upvote"){
+          numUpVotes++;
+        }else{
+          numDownVotes++;
+        }
         commentsSummary.addRow.call(commentsSummary, comment);
       });
+      console.log("Total up votes : " + numUpVotes);
+      console.log("Total down votes : " + numDownVotes);
+      $("#upvoteCount").text(numUpVotes);
+      $("#downvoteCount").text(numDownVotes);
     });
   });
 
@@ -75,6 +84,8 @@
     myBandComments.saveComment(data);
     commentsSummary.addRow(data);
   });
+
+  formHandlerComments.addInputHandler();
 
   //Login Button Click Handler
   /*document.getElementById("LoginButton").addEventListener("click", function() {

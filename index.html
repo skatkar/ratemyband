@@ -4,11 +4,20 @@
 <head>
   <meta charset="utf-8">
   <title>Rate My Band</title>
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .fa:hover {
+      color: red;
+    }
+  </style>
+
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
   <link rel="stylesheet" href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheets/styles.css">
 
   <!-- Custom styles for this template -->
 
@@ -35,36 +44,58 @@
 
     <div class="panel panel-title">
       <div class="panel-body">
-        <form data-band-review="form">
+        <form id="form" data-band-review="form">
           <div class="form-group">
 
-            <!--upvote and downvote radio buttons-->
+            <!-- upvote and downvote radio buttons -->
             <div class="vote-selector form-group">
-              <input id="downvote" type="radio" name="vote" value="downvote" />
+              <input id="downvote" type="radio" name="vote" value="downvote" class="fa" />
               <label class="drinkcard-cc downvote" for="downvote"></label>
-              <input id="upvote" type="radio" name="vote" value="upvote" />
+              <input id="upvote" type="radio" name="vote" value="upvote" class="fa" />
               <label class="drinkcard-cc upvote" for="upvote"></label>
             </div>
 
-            <label for="userComment"> </label>
-            <input class="form-control" name="comment" placeholder="Add a comment" id="userComment" autofocus/>
-          </div>
-          <div class="form-group">
+            <!-- <div class="vote-selector form-group"> -->
+            <!-- <input id="downvote" type="radio" name="vote" value="downvote" class="fa fa-thumbs-down" /> -->
+            <!-- <input id="upvote" type="radio" name="vote" value="upvote" class="fa fa-thumbs-up" />  -->
+            <!-- </div> -->
+
             <label for="username">Username</label>
             <input class="form-control" type="username" name="username" id="userName" value="" required>
+
+            <label for="userComment"> </label>
+            <input class="form-control" name="comment" placeholder="Add a comment" id="userComment" autofocus required/>
           </div>
+          <!--<div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" type="username" name="username" id="userName" value="" required>
+          </div>-->
 
           <button type="submit" class="btn btn-default">Submit</button>
           <button type="reset" class="btn btn-default">Reset</button>
         </form>
       </div>
     </div>
-    <div class="panel panel-footer">
+    <!--<div class="panel panel-footer">
       <div class="header panel-heading">
         <span class="fa fa-comments fa-fw"></span>
         <b>Comments:</b>
         <div data-band-review="user-comments"></div>
 
+      </div>
+    </div>-->
+
+    <div class="panel panel-footer">
+      <div class="header panel-heading">
+        <div class="comments">
+          <span class="fa fa-comments fa-fw"></span>
+          <b>Comments:</b><br>
+          <i class="fa fa-thumbs-up"></i><label id="upvoteCount"></label>
+          <i class="fa fa-thumbs-down"></i><label id="downvoteCount"></label>
+          <div class="comment">
+            <div data-band-review="user-comments"></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
