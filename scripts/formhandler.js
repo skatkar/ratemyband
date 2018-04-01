@@ -23,9 +23,32 @@
 
       });
       data.bandName = bandName;
+      data.username = $.cookie("username");
       fn(data);
       this.reset();
       this.elements[0].focus();
+    });
+  };
+
+  FormHandler.prototype.addLoginHandler = function(fn){
+    this.$formElement.on("submit", function(event){
+      event.preventDefault();
+      var user = {};
+      $(this).serializeArray().forEach(function(item){
+        user[item.name] = item.value;
+      });
+      fn(user);
+    });
+  };
+
+  FormHandler.prototype.addSignupHandler = function(fn){
+    this.$formElement.on("submit", function(event){
+      event.preventDefault();
+      var user = {};
+      $(this).serializeArray().forEach(function(item){
+        user[item.name] = item.value;
+      });
+      fn(user);
     });
   };
 

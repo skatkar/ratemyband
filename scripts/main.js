@@ -1,95 +1,141 @@
 (function(window) {
   "use strict";
-  var FORM_SELECTOR_COMMENTS = "[data-band-review=\"form\"]";
-  var CHECKLIST_SELECTOR = "[data-band-review=\"user-comments\"]";
+  var DETAIL_IMAGE_SELECTOR = "[data-image-role=\"target\"]";
+  var DETAIL_TITLE_SELECTOR = "[data-image-role=\"title\"]";
+  var DETAIL_FRAME_SELECTOR = "[data-image-role=\"frame\"]";
+  var THUMBNAIL_LINK_SELECTOR = "[data-image-role=\"trigger\"]";
+  var GENRE_LIST_SELECTOR = "[data-band-left=\"genre-list\"]";
+  var LOGIN_FORM_SELECTOR = "[data-signin=\"form\"]";
+  var SIGNUP_FORM_SELECTOR = "[data-signup=\"form\"]";
+  var HIDDEN_DETAIL_CLASS = "hidden-detail";
+  var TINY_EFFECT_CLASS = "is-tiny";
   var SERVER_URL_COMMENTS = "http://localhost:2403/user-comments";
   var SERVER_URL_BANDS = "http://localhost:2403/bands";
+  var SERVER_URL_USERS = "http://localhost:2403/users";
 
   var App = window.App;
   var Band = App.Band;
   var RemoteDataStore = App.RemoteDataStore;
   var FormHandler = App.FormHandler;
-  var Comments = App.Comments;
+  var User = App.User;
   var $ = window.jQuery;
-
-  /*var params = (function() {
-    var a;
-    return a;
-  })();*/
-  var params = window.location.search.split("?")[1];
-  var bandName = decodeURIComponent(params.split("=")[1]);
 
   var remoteDSComments = new RemoteDataStore(SERVER_URL_COMMENTS);
   var remoteDSBands = new RemoteDataStore(SERVER_URL_BANDS);
+  var remoteDSUsers = new RemoteDataStore(SERVER_URL_USERS);
 
   var myBandComments = new Band(remoteDSComments);
   var bandDetails = new Band(remoteDSBands);
+  var userDetails = new User(remoteDSUsers);
+
+  var loginFormHandler = new FormHandler(LOGIN_FORM_SELECTOR);
+  var signupFormHandler = new FormHandler(SIGNUP_FORM_SELECTOR);
 
   window.myBandComments = myBandComments;
   window.bandDetails = bandDetails;
+  window.userDetails = userDetails;
+  //window.loginFormHandler = loginFormHandler;
 
-  var commentsSummary = new Comments(CHECKLIST_SELECTOR);
-  var formHandlerComments = new FormHandler(FORM_SELECTOR_COMMENTS);
+  /*var commentsSummary = new Comments(CHECKLIST_SELECTOR);
+  var formHandlerComments = new FormHandler(FORM_SELECTOR_COMMENTS);*/
+
+  function setDetails(imageUrl, titleText) {
+    "use strict";
+    $(DETAIL_IMAGE_SELECTOR).attr("src", imageUrl);
+    $(DETAIL_TITLE_SELECTOR).text(titleText);
+    bandDetails.getBandInfo.call(bandDetails, titleText, function(serverResponse) {
+      $("#band-description").text(serverResponse.description);
+      $("#band-comments").attr("href", "review.html?bandName=" + titleText);
+    });
+  }
+
+  function imageFromThumb(thumbnail) {
+    "use strict";
+    return thumbnail.getAttribute("data-image-url");
+  }
+
+  function titleFromThumb(thumbnail) {
+    "use strict";
+    return thumbnail.getAttribute("data-image-title");
+  }
+
+  function setDetailsFromThumb(thumbnail) {
+    "use strict";
+    setDetails(imageFromThumb(thumbnail), titleFromThumb(thumbnail));
+  }
+
+  function addThumbClickHandler(thumb) {
+    thumb.addEventListener("click", function(event) {
+      event.preventDefault();
+      setDetailsFromThumb(thumb);
+      showDetails();
+    });
+  }
+
+  function getThumbnailsArray() {
+    "use strict";
+    var thumbnails = document.querySelectorAll(THUMBNAIL_LINK_SELECTOR);
+    var thumbnailArray = [].slice.call(thumbnails);
+    return thumbnailArray;
+  }
+
+  function showDetails() {
+    "use strict";
+    var frame = document.querySelector(DETAIL_FRAME_SELECTOR);
+    document.body.classList.remove(HIDDEN_DETAIL_CLASS);
+    frame.classList.add(TINY_EFFECT_CLASS);
+    setTimeout(function() {
+      frame.classList.remove(TINY_EFFECT_CLASS);
+    }, 50);
+  }
+
+
+  function initializeEvents() {
+    "use strict";
+    var thumbnails = getThumbnailsArray();
+    thumbnails.forEach(addThumbClickHandler);
+
+  }
 
   $(document).ready(function() {
-    $("#bandName").text(bandName);
-    //$("input[name=\"vote\"]").required = true;
-    bandDetails.getBandInfo.call(bandDetails, bandName, function(bandInfo) {
-      $("#bandPerformanceDay").text("Performance on " + bandInfo.performanceDay);
-      $("#bandVideo").attr("src", bandInfo.bandVideo);
+    bandDetails.getAllBands.call(bandDetails, function(serverResponse) {
+      bandDetails.displayAllBands.call(bandDetails, serverResponse, GENRE_LIST_SELECTOR);
+      initializeEvents();
     });
   });
 
-  $(FORM_SELECTOR_COMMENTS).ready(function() {
-    //console.log("Page refreshed");
+  $("#band-comments").on("click", function(event) {
+    event.preventDefault();
+    //$("#band-comments").attr("href");
+    if ($.cookie("username") === null || $.cookie("username") === "" ||
+      $.cookie("username") === "null" || $.cookie("username") === undefined) {
+      $(".form-signin").trigger("reset");
+      $("#login-modal").modal();
 
-    myBandComments.displayComments.call(myBandComments, bandName, function(comments) {
-      var numUpVotes = 0;
-      var numDownVotes = 0;
-      $.each(comments, function(i, comment) {
-        if(comment.vote == "upvote"){
-          numUpVotes++;
-        }else{
-          numDownVotes++;
-        }
-        commentsSummary.addRow.call(commentsSummary, comment);
-      });
-      console.log("Total up votes : " + numUpVotes);
-      console.log("Total down votes : " + numDownVotes);
-      $("#upvoteCount").text(numUpVotes);
-      $("#downvoteCount").text(numDownVotes);
-    });
-  });
-
-
-  //display comments on page reloads
-  /*remoteDSComments.getAll(function(response) {
-    var Comments = App.Comments;
-    var commentsSummary = new Comments(CHECKLIST_SELECTOR);
-    var i = response.length;
-
-    var numUpvotes = 0;
-    var numDownvotes = 0;
-
-    //count the number of votes in database
-    for (var j = 0; j < i; j++) {
-      commentsSummary.addRow(response[j]);
-      if (response[j].vote == "upvote") numUpvotes++;
-      if (response[j].vote == "downvote") numDownvotes++;
-      console.log("up/down: " + numUpvotes + " " + numDownvotes);
+    } else {
+      window.location.href = event.currentTarget;
     }
-  });*/
 
-  formHandlerComments.addSubmitHandler(bandName, function(data) {
-    myBandComments.saveComment(data);
-    commentsSummary.addRow(data);
   });
 
-  formHandlerComments.addInputHandler();
+  loginFormHandler.addLoginHandler.call(loginFormHandler,function(user){
+    userDetails.authenticate.call(userDetails,user,function(loginStatus){
+      console.log("Login status is : " + loginStatus);
+      if(loginStatus == "success"){
+        $.cookie("username", user.username);
+        window.location.href = $("#band-comments").attr("href");
+      }else if(loginStatus == "signup"){
+        $("#signup-modal").modal();
+      }else{
+        $("#login-error").removeClass("hide");
+      }
+    });
+  });
 
-  //Login Button Click Handler
-  /*document.getElementById("LoginButton").addEventListener("click", function() {
-    console.log("You clicked the login button!");
-    $("#login-modal").modal();
-  });*/
+  signupFormHandler.addSignupHandler.call(signupFormHandler, function(user){
+    userDetails.register.call(userDetails,user);
+    $.cookie("username", user.username);
+    window.location.href = $("#band-comments").attr("href");
+  });
+
 })(window);

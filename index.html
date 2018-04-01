@@ -2,114 +2,140 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Rate My Band</title>
-  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-    .fa:hover {
-      color: red;
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Rate my band</title>
+    <style>
+    .error{
+      color : red;
     }
-  </style>
+    </style>
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
 
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
-  <link rel="stylesheet" href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="stylesheets/styles.css">
-
-  <!-- Custom styles for this template -->
-
-  <link rel="stylesheet" href="stylesheets/signin.css">
-  <link rel="stylesheet" href="stylesheets/twitter.css">
-  <link rel="stylesheet" href="stylesheets/modal.css" />
-
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="stylesheets/signin.css">
+    <link rel="stylesheet" href="stylesheets/twitter.css">
+    <link rel="stylesheet" href="stylesheets/modal.css">
+    <link rel="stylesheet" href="stylesheets/pagesplit.css">
 
 </head>
 
-<body class="container">
-  <header>
-    <h3>Rate My Band</h3>
-  </header>
-
-  <section>
-    <div class="panel panel-footer">
-      <label id="bandName"></label>
-      <p id="bandPerformanceDay"></p>
-      <div data-band="video">
-        <iframe id="bandVideo" width="854" height="480" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      </div>
+<header>
+    <h3>Rate my band</h3>
+    <div id="logo">
+        <img src="images/logo.png">
     </div>
+</header>
 
-    <div class="panel panel-title">
-      <div class="panel-body">
-        <form id="form" data-band-review="form">
-          <div class="form-group">
+<div id="comment-modal" class="modal">
+    <label>
+        <div data-modal-info="modal">
+            <div class="panel panel-title">
+                <div class="panel-body">
+                    <form data-coffee-order="form">
+                        <div class="form-group">
 
-            <!-- upvote and downvote radio buttons -->
-            <div class="vote-selector form-group">
-              <input id="downvote" type="radio" name="vote" value="downvote" class="fa" />
-              <label class="drinkcard-cc downvote" for="downvote"></label>
-              <input id="upvote" type="radio" name="vote" value="upvote" class="fa" />
-              <label class="drinkcard-cc upvote" for="upvote"></label>
+                            <div class="vote-selector form-group">
+                                <input id="downvote" type="radio" name="vote" value="downvote" />
+                                <label class="drinkcard-cc downvote" for="downvote"></label>
+                                <input id="upvote" type="radio" name="vote" value="upvote" />
+                                <label class="drinkcard-cc upvote" for="upvote"></label>
+                            </div>
+
+                            <label for="userComment"> </label>
+                            <input class="form-control" name="comment" placeholder="Add a comment" id="userComment" autofocus/>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button type="reset" class="btn btn-default">Reset</button>
+                    </form>
+                </div>
             </div>
-
-            <!-- <div class="vote-selector form-group"> -->
-            <!-- <input id="downvote" type="radio" name="vote" value="downvote" class="fa fa-thumbs-down" /> -->
-            <!-- <input id="upvote" type="radio" name="vote" value="upvote" class="fa fa-thumbs-up" />  -->
-            <!-- </div> -->
-
-            <label for="username">Username</label>
-            <input class="form-control" type="username" name="username" id="userName" value="" required>
-
-            <label for="userComment"> </label>
-            <input class="form-control" name="comment" placeholder="Add a comment" id="userComment" autofocus required/>
-          </div>
-          <!--<div class="form-group">
-            <label for="username">Username</label>
-            <input class="form-control" type="username" name="username" id="userName" value="" required>
-          </div>-->
-
-          <button type="submit" class="btn btn-default">Submit</button>
-          <button type="reset" class="btn btn-default">Reset</button>
-        </form>
-      </div>
-    </div>
-    <!--<div class="panel panel-footer">
-      <div class="header panel-heading">
-        <span class="fa fa-comments fa-fw"></span>
-        <b>Comments:</b>
-        <div data-band-review="user-comments"></div>
-
-      </div>
-    </div>-->
-
-    <div class="panel panel-footer">
-      <div class="header panel-heading">
-        <div class="comments">
-          <span class="fa fa-comments fa-fw"></span>
-          <b>Comments:</b><br>
-          <i class="fa fa-thumbs-up"></i><label id="upvoteCount"></label>
-          <i class="fa fa-thumbs-down"></i><label id="downvoteCount"></label>
-          <div class="comment">
-            <div data-band-review="user-comments"></div>
-          </div>
         </div>
-      </div>
+    </label>
+</div>
+
+<div id="login-modal" class="modal">
+    <label>
+        <div data-modal-info="modal">
+            <form class="form-signin" data-signin="form">
+                <h2 class="form-signin-heading">Please sign in</h2>
+
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" name="username" id="username" class="form-control" placeholder="Username" value="" required autofocus>
+
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password" value="">
+                <label id="login-error" class="hide error">Invalid credentials!</label>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+            </form>
+        </div>
+    </label>
+</div>
+
+<!--modal for signup-->
+<div id="signup-modal" class="modal">
+    <label>
+        <div data-modal-info="modal">
+            <form class="form-signin" data-signup="form">
+                <h2 class="form-signin-heading">Register!</h2>
+                <label id="register">You are not registered yet!</label>
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" name="username" id="signupusername" class="form-control" placeholder="Username" value="" required autofocus>
+
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" name="password" id="signuppassword" class="form-control" placeholder="Password" value="" required>
+
+                <label for="emailAddress" class="sr-only">Email</label>
+                <input type="email" name="emailAddress" id="signupemail" class="form-control" placeholder="abcd@domain.com" value="">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+
+            </form>
+        </div>
+    </label>
+</div>
+
+<div class="container">
+    <div class="split left" data-band-left="genre-list">
+
     </div>
-  </section>
+    <div class="split right" data-band-right="band-details">
+        <header>
+            <h3>Rate my band</h3>
+        </header>
+        <div class="panel panel-footer">
+            <div class="detail-image-frame" data-image-role="frame">
+                <img class="detail-image" data-image-role="target" src="images/band4.jpg" alt="">
+                <span class="detail-image-title" data-image-role="title"></span>
+            </div>
+        </div>
+        <div class="panel panel-footer">
+            <div class="description">
+                <p id="band-description">Our website lets you give comments about recent events of your favorite bands. Give your feedbacks and let your favorite band know what you feel!.
+                </p>
+            </div>
+        </div>
+        <div class="panel panel-footer">
+            <a id="band-comments"><img src="images/review.png" width="100" height="50" border="0"></a>
+        </div>
+    </div>
+</div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js" charset="utf-8"></script>
+<!--for modal-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<!-- for cookie -->
+<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.cookie/1.3.1/jquery.cookie.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js" charset="utf-8"></script>
-  <!--for modal-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-  <!--my scripts-->
-  <script src="scripts/comments.js" charset="utf-8"></script>
-  <script src="scripts/formhandler.js" charset="utf-8"></script>
-  <script src="scripts/remotedatastore.js" charset="utf-8"></script>
-  <script src="scripts/band.js" charset="utf-8"></script>
-  <script src="scripts/main.js" charset="utf-8"></script>
-</body>
+<!--my scripts-->
+<script src="scripts/formhandler.js" charset="utf-8"></script>
+<script src="scripts/remotedatastore.js" charset="utf-8"></script>
+<script src="scripts/band.js" charset="utf-8"></script>
+<script src="scripts/user.js" charset="utf-8"></script>
+<script src="scripts/main.js" charset="utf-8"></script>
 
 </html>

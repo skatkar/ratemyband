@@ -19,8 +19,8 @@
     });
   };
 
-  RemoteDataStore.prototype.getByKey = function(key, cb) {
-    $.get(this.serverUrl + "?bandName=" + key, function(serverResponse) {
+  RemoteDataStore.prototype.getByKey = function(key,value, cb) {
+    $.get(this.serverUrl + "?"+ key+"=" + value, function(serverResponse) {
       console.log(serverResponse);
       cb(serverResponse);
     });
